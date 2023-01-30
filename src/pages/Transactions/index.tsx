@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Header } from "../../Components/Header";
 import { Summary } from "../../Components/Summary";
 import { SearchForm } from "./components/SearchForm";
@@ -7,7 +8,24 @@ import {
   TransactionsTable,
 } from "./styles";
 
+interface Transaction {
+  id: number;
+  description: string;
+  type: "income" | "outcome";
+  price: number;
+  category: string;
+  createdAt: string;
+}
 export function Transactions() {
+  const [transactions, setTransactions] = useState<Transaction>([]);
+  async function LoadTransactions() {
+    const response = await fetch("http://localhost:3333/transactions");
+    const data = await response.json();
+    console.log(data);
+  }
+  useEffect(() => {
+    LoadTransactions();
+  }, []);
   return (
     <div>
       <Header />
